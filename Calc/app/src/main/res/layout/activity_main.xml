@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <EditText
+        android:id="@+id/val2"
+        android:layout_width="0dp"
+        android:layout_height="49dp"
+        android:layout_marginTop="68dp"
+        android:layout_marginBottom="60dp"
+        android:ems="10"
+        android:inputType="text"
+        android:text="Val2"
+        app:layout_constraintBottom_toBottomOf="@+id/Answer"
+        app:layout_constraintEnd_toEndOf="@+id/val1"
+        app:layout_constraintStart_toStartOf="@+id/val1"
+        app:layout_constraintTop_toTopOf="@+id/val1" />
+
+    <EditText
+        android:id="@+id/val1"
+        android:layout_width="266dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="33dp"
+        android:layout_marginTop="132dp"
+        android:layout_marginBottom="129dp"
+        android:ems="10"
+        android:inputType="text"
+        android:text="Val1"
+        app:layout_constraintBottom_toBottomOf="@+id/Answer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/Answer"
+        android:layout_width="251dp"
+        android:layout_height="29dp"
+        android:layout_marginStart="108dp"
+        android:layout_marginTop="156dp"
+        android:text="Answer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/val1" />
+
+    <Button
+        android:id="@+id/plusButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="+"
+        app:layout_constraintBaseline_toBaselineOf="@+id/minusButton"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/minusButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="164dp"
+        android:layout_marginBottom="163dp"
+        android:text="-"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/plusButton" />
+
+    <Button
+        android:id="@+id/clearButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="35dp"
+        android:text="Clear"
+        app:layout_constraintBaseline_toBaselineOf="@+id/minusButton"
+        app:layout_constraintStart_toEndOf="@+id/minusButton" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
