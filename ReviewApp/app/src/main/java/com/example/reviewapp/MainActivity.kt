@@ -3,7 +3,10 @@ package com.example.reviewapp
 //point is to review all the content from weeks 1-4
 import com.example.reviewapp.R
 //import android.R
+import com.example.reviewapp.GreetingViewModel
 import android.content.Context
+import android.content.Intent
+import android.content.Intent.ACTION_SEND
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -28,6 +31,7 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.Favorite
@@ -37,6 +41,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -44,6 +49,8 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -64,11 +71,20 @@ import androidx.compose.ui.graphics.colorspace.ColorSpaces
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.LineHeightStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat.startActivity
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.reviewapp.ui.theme.ReviewAppTheme
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -85,6 +101,9 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ReviewAppTheme {
+
+                val navController: NavHostController = rememberNavController()
+
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
                     topBar = {
@@ -93,7 +112,10 @@ class MainActivity : ComponentActivity() {
                     },
                     bottomBar = {
                         //generate the bottom bar
-                        bottomBar()
+
+
+                        bottomNavBar(navController)
+                        //bottomBar()
                     },
                     floatingActionButton = {
                         //floating action button
@@ -102,29 +124,13 @@ class MainActivity : ComponentActivity() {
                     }
                 ){innerPadding ->
                     Column(
-                        modifier = Modifier.fillMaxSize().padding(innerPadding)
+                        modifier = Modifier.fillMaxWidth().padding(innerPadding)
                     ){
-                        //modal example
-                        //modalExample()
+                        navHostExample(innerPadding, navController)
 
-                        //shared pref example
-                        //sharedPrefExample()
+                        //moved to home screen
 
-                        //csv reading example
-                        //var count  = csvRead(LocalContext.current, "data.csv", "London")
-                        //Text("Count: $count")
-
-                        //card example
-                        //cardExample()
-
-                        //lazy column example
-                        //lazyColumn(innerPadding)
                      }
-
-
-
-
-
 
                 }
             }
@@ -439,22 +445,211 @@ fun lazyColumn(innerPadding: PaddingValues){
 }
 //lazy column for displaying / adding medicines to be take one at a time
 
-@Composable
-fun shareIntent(){}
-//sharing data with another app
-//https://edstem.org/au/courses/31394/lessons/100959/slides/694121
 
 @Composable
-fun moreNavigation(){}
+fun HomeScreen(innerPadding: PaddingValues){
+    Text("Home")
+    //share intent
+    //shareIntent(innerPadding)
+
+    //mvvm
+    var viewModel: GreetingViewModel = viewModel()
+    mvvm(innerPadding, viewModel)
+
+    //modal example
+    //modalExample()
+
+    //shared pref example
+    //sharedPrefExample()
+
+    //csv reading example
+    //var count  = csvRead(LocalContext.current, "data.csv", "London")
+    //Text("Count: $count")
+
+    //card example
+    //cardExample()
+
+    //lazy column example
+    //lazyColumn(innerPadding)
+
+
+}
+
+@Composable
+fun LoginScreen(innerPadding: PaddingValues){
+    Text("Login")
+}
+
+@Composable
+fun SettingsScreen(innerPadding: PaddingValues){
+    Text("Settings")
+}
+
+@Composable
+fun bottomNavBar(navController: NavHostController){
+
+
+    var selectedItem by remember { mutableStateOf(0)}
+
+    val items = listOf(
+        "home",
+        "settings",
+        "login"
+    )
+
+    NavigationBar{
+        items.forEachIndexed { index, item ->
+
+            NavigationBarItem(
+            //icon
+                icon = {
+                    when (item) {
+                        //if home
+                        "home" -> Icon(Icons.Filled.Home, contentDescription = "Home")
+                        "login" -> Icon(Icons.Filled.Lock, contentDescription = "Login")
+                        "settings" -> Icon(Icons.Filled.Settings, contentDescription = "Settings")
+                    }
+                },
+                label = { Text(item) },
+
+                selected = (selectedItem == index),
+
+                onClick = {
+                    selectedItem = index
+                    navController.navigate(item)
+                }
+
+            )
+        }
+
+    }
+}
+
+
+@Composable
+fun navHostExample(innerPadding: PaddingValues, navController: NavHostController){
+
+    NavHost(
+        //use provided NavHostController
+        navController = navController,
+        //starting destination = home
+        startDestination = "home"
+    ){
+        //home route
+        composable("home"){
+            HomeScreen(innerPadding)
+        }
+
+        //settings route
+        composable("settings"){
+            SettingsScreen(innerPadding)
+        }
+
+        //login route
+        composable("login"){
+            LoginScreen(innerPadding)
+        }
+    }
+
+
+}
 // using navhost and nav controller to navigate between pages
-//https://edstem.org/au/courses/31394/lessons/100959/slides/694120
-//https://edstem.org/au/courses/31394/lessons/100960/slides/694126 - example vid
+
 
 @Composable
-fun mvvm(){}
-// come back to -> model view  view model?
-//https://edstem.org/au/courses/31394/lessons/100962/slides/694141 - 25 mins
-//test by rotating screen and ensuring that model | view | viewmodel are abstracted
+fun shareIntent(paddingValues: PaddingValues) {
+
+    var shareText by remember { mutableStateOf("") }
+
+    Column() {
+        Spacer(modifier = Modifier.height(20.dp))
+
+
+        TextField(
+            value = shareText,
+            onValueChange = { shareText = it },
+            label = { Text("Enter Text to share!") }
+        )
+
+        Spacer(modifier = Modifier.height(20.dp))
+        val context = LocalContext.current
+
+        Button(
+            onClick = {
+                val shareIntent = Intent(ACTION_SEND)
+
+                shareIntent.type = "text/plain"
+                shareIntent.putExtra(Intent.EXTRA_TEXT, shareText)
+                context.startActivity(Intent.createChooser(shareIntent, "Share Text Via"))
+            }) {
+            Text("Share my text")
+        }
+    }
+}
+
+
+
+//sharing data with another app
+
+
+@Composable
+fun mvvm(innerPadding: PaddingValues,
+         viewModel: GreetingViewModel){
+
+    val userName = viewModel.userName
+    val greetingMessage = viewModel.greetingMessage
+    val isLoading = viewModel.isLoading
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(innerPadding)
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ){
+        TextField(
+            value = userName,
+            onValueChange = { viewModel.updateUserName(it)},
+            label = { Text("Enter your name")},
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Button(
+            onClick = { viewModel.generateGreeting()},
+            modifier = Modifier.align(Alignment.CenterHorizontally)
+        ){
+            Text("Generate Greeting")
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        if(isLoading){
+            CircularProgressIndicator()
+        } else {
+            Text(
+                text = greetingMessage,
+                fontSize = 20.sp,
+                textAlign = TextAlign.Center
+
+            )
+        }
+        }
+    }
+
+    //model = data & repositories
+    // view model = queries and logic that does NOT directly change view
+    // view = the update to the view based on the output of the view model logic
+
+    //i.e. model = database
+    // view model = filter items in current memory and in database based on logic
+    // view = update the screen to reflect the filtered list
+
+
+
+
 
 
 
