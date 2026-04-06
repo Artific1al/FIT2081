@@ -22,13 +22,9 @@ class MainActivity : AppCompatActivity() {
 
     //reference to the text view to display the result
     lateinit var resultTextView: TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        firstNumberEditText = findViewById(R.id.val1)
-        secondNumberEditText = findViewById(R.id.val2)
-
-        // lesson 6 on ed
 
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
@@ -37,5 +33,64 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        addButton = findViewById(R.id.addButton)
+        subButton = findViewById(R.id.subButton)
+        clearButton = findViewById(R.id.clearButton)
+
+        firstNumberEditText = findViewById(R.id.val1)
+        secondNumberEditText = findViewById(R.id.val2)
+        resultTextView = findViewById(R.id.Answer)
+
+
+        addButton.setOnClickListener {
+            calculateResult("add")
+        }
+
+        subButton.setOnClickListener {
+            calculateResult("sub")
+        }
+
+        clearButton.setOnClickListener {
+            clearAll()
+        }
+        // lesson 6 on ed
     }
-}
+
+
+    fun calculateResult(opt: String){
+
+            val num1Str = firstNumberEditText.text.toString()
+            val num2Str = secondNumberEditText.text.toString()
+
+        if (num1Str.isEmpty() || num2Str.isEmpty()){
+            resultTextView.text = "Please enter both numbers"
+            return
+        }
+
+        var result: Int = 0
+        val num1 = num1Str.toInt()
+        val num2 = num2Str.toInt()
+
+        if (opt == "add"){
+            result = num1 + num2
+        }
+        else{
+            result = num1 - num2
+        }
+
+        resultTextView.text = "Result: $result"
+
+        }
+
+        fun clearAll() {
+            firstNumberEditText.text.clear()
+            secondNumberEditText.text.clear()
+            resultTextView.text = ""
+        }
+
+
+
+    }
+
+

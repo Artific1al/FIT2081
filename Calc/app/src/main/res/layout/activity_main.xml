@@ -39,23 +39,23 @@
         android:id="@+id/Answer"
         android:layout_width="251dp"
         android:layout_height="29dp"
-        android:layout_marginStart="108dp"
-        android:layout_marginTop="156dp"
+        android:layout_marginStart="88dp"
+        android:layout_marginTop="140dp"
         android:text="Answer"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/val1" />
 
     <Button
-        android:id="@+id/plusButton"
+        android:id="@+id/addButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="+"
-        app:layout_constraintBaseline_toBaselineOf="@+id/minusButton"
+        app:layout_constraintBaseline_toBaselineOf="@+id/subButton"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/minusButton"
+        android:id="@+id/subButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -63,7 +63,7 @@
         android:layout_marginBottom="163dp"
         android:text="-"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/plusButton" />
+        app:layout_constraintStart_toEndOf="@+id/addButton" />
 
     <Button
         android:id="@+id/clearButton"
@@ -71,7 +71,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="35dp"
         android:text="Clear"
-        app:layout_constraintBaseline_toBaselineOf="@+id/minusButton"
-        app:layout_constraintStart_toEndOf="@+id/minusButton" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/subButton"
+        app:layout_constraintStart_toEndOf="@+id/subButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
